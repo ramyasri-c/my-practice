@@ -1,0 +1,144 @@
+CI - CONTINOUS INTEGRATION (BUILD + TEST) = OLD CODE WITH NEW CODE
+CD - CONTINOUS DELIVERY		: Deployment to production is manual
+CD - CONTINOUS DEPLOYMET	: Deployment to production is automated
+
+ENV:
+DEV	: DEVELOPERS
+TEST	: TESTER
+STAGING	: BEFORE PRODUCTION
+UAT	: CLIENT
+PROD	: USERS (LIVE)
+
+PRE/NON PROD: DEV, TEST, UAT, STATING.
+HIGH AVAILABILTY - MORE THAN ONE SERVER. (ONE -1A, TWO - 1B)
+
+PIPELINE: 
+SERIES OF EVENTS INTERNINKED WITH EACH OTHER.
+STEP BY STEP EXECUTION OF A PROCESS.
+
+JENKINS: PORT - 8080
+
+SETUP:
+STEP-1: GETTING REP0 (jenkins.io -- > downloads -- > Redhat)
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+STEP-2: INSTALLING JAVA 11
+amazon-linux-extras install java-openjdk11 -y
+
+STEP-3: INSTALLING GIT JENKINS MAVEN 
+yum install git maven jenkins -y
+
+STEP-4: STARTING THE SERVICE (any service will be on stopped state when its installed)
+systemctl start jenkins
+systemctl status jenkins
+
+STEP-5: CONNECTING TO JENKINS
+Public-ip:8080 -- > browser
+
+
+CUSTOM WORKSPACE: it will gives the output on our desired location.
+
+mkdir -p swiggy/jenkinsbuilds/
+cd /root/swiggy/jenkinsbuilds
+
+jenkins ui -- > jobname -- > configure -- > advance -- > custom workspace -- > /root/swiggy/jenkinsbuilds -- > save
+chown jenkins:jenkins /root
+chown jenkins:jenkins /root/*
+
+HISTORY:
+
+  1    sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    2    sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    3  amazon-linux-extras install java-openjdk11 -y
+    4  java -version
+    5  yum install git maven jenkins -y
+    6  systemctl start jenkins
+    7  systemctl status jenkins
+    8  cat /var/lib/jenkins/secrets/initialAdminPassword
+    9  cd /var/lib/jenkins/workspace/job1
+   10  ll
+   11  java -version
+   12  ll
+   13  ls -ltrh
+   14  pwd
+   15  cd
+   16  ll
+   17  mkdir -p swiggy/jenkinsbuilds
+   18  ll
+   19  pwd
+   20  cd swiggy/jenkinsbuilds/
+   21  pwd
+   22  cd /
+   23  ll
+   24  chown jenkins:jenkins root/
+   25  ll
+   26  cd root/
+   27  ll
+   28  cd /
+   29  chown jenkins:jenkins root/*
+   30  ll
+   31  cd /root/
+   32  ll
+   33  cd swiggy/
+   34  ll
+   35  chown jenkins:jenkins jenkinsbuilds/
+   36  ;;
+   37  ll
+   38  cd jenkinsbuilds/
+   39  pwd
+   40  ll
+   41  history
+=====================================================================================================================================================================
+21-06=2023: PARAMETERS, VARIABLES
+
+Parameters are the inputs given by the user while building.
+
+1. USER DEFINED PARAMETERS: this parameters can be given by user only.
+
+a. Choice parameter: used when we have multiple options to generate a build but need to use only on specific one.
+b. String Parameter: it passess user input in single line.
+c. Multi Line string parameter: it passess user input in Multi line.
+d. File Parameter: It is used to build local files on jenkins.
+e. Boolean Parameter: it is used for yes or no options.
+
+2. VARIABLES: which will store the values & changes as per the time.
+
+a. USER DEFINED VARS: 
+1. LOCAL VARS: it will work inside a job
+
+name=siva
+loc=hyderabad
+echo "hai all my name is $name, $name is comming from $loc"
+
+
+2. GLOBAL VARS: it will work outside of a job
+Dashboard -- > Manage Jenkins -- > System -- > Environment vars -- > add 
+
+b. JENKINS ENVIRONMENT VARS: it can be defined by user
+
+==================================================================
+
+DAY-03: 
+
+CRONJOB: To schedule the works
+
+*	: Minutes
+*	: Hours
+*	: Date
+*	: Month
+*	: day (0=sun)
+
+9:00 am 23 : 0 9 23 6 5
+10:30 pm 22: 30 22 22 6 4
+
+POLLSCM: It will set a time limit if the source code change on that time it will build.
+
+WEBHOOKS: If the developer changes the code then it will build at that point of time.
+
+THROTTLE BUILD: To restric the number of builds for time(M,H,D,W,M)
+
+PASSWORDLESS LOGIN: 
+cd /var/lib/jenkins
+vim config.xml -- > line 7 : true=false -- > :wq
+systemctl restart jenkins
